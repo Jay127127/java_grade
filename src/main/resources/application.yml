@@ -1,0 +1,37 @@
+spring:
+  profiles:
+    active: local
+  jackson:
+    serialization:
+      indent_output: true
+    time-zone: Asia/Seoul
+  #    property-naming-strategy: LOWER_CAMEL_CASE      # 소문자 Camel Case
+  mvc:
+    throw-exception-if-no-handler-found: true   # 404 Error 처리
+    dispatch-options-request: false             # 404 Error 처리
+    #================================================
+    #    TODO: POM Main DB 연결 정보
+    #================================================
+  datasource:
+    username: root
+    password: pass0001!
+  #    jdbc-url: jdbc:mariadb://172.16.4.191:3306/diva_pom
+  #    driver-class-name: org.mariadb.jdbc.Driver
+    #=============================================
+    # sql spy 사용
+    #=============================================
+    #jdbc-url: jdbc:log4jdbc:mariadb://172.16.4.191:3306/diva_pom_dev?autoReconnect=true&serverTimezone=Asia/Seoul&useSSL=false&allowMultiQueries=true&useUnicode=ture&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&&allowMultiQueries=true
+    url: jdbc:log4jdbc:mariadb://localhost:3306/diva_pom?autoReconnect=true&serverTimezone=Asia/Seoul&useSSL=false&allowMultiQueries=true&useUnicode=ture&characterEncoding=utf8&allowPublicKeyRetrieval=true&useSSL=false&&allowMultiQueries=true
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+
+#=================================
+#         Server 설정
+#=================================
+server:
+  port: 8090
+  error:
+    include-exception: false
+    whitelabel:
+      enabled: true
+
+
