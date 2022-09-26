@@ -19,12 +19,13 @@ public class app02 {
 
             for (int i = 0; i < n; ++i) {
                 String name = RandomDataUtil.randomKoreanFullName(1, 2);
+                int studentNo = n++;
                 int kor = random.nextInt(100);
                 int eng = random.nextInt(100);
                 int math = random.nextInt(100);
                 int his = random.nextInt(100);
 
-                StudentDto student = new StudentDto(name, kor, eng, math, his);
+                StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his);
                 studentDtoList.add(student);
             }
 

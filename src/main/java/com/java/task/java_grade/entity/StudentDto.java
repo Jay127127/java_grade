@@ -22,8 +22,8 @@ public class StudentDto {
     public StudentDto () {
     }
 
-    public StudentDto (String studentName, Integer korean, Integer english, Integer math, Integer history) {
-        ++studentNo;
+    public StudentDto (int studentNo, String studentName, Integer korean, Integer english, Integer math, Integer history) {
+        this.studentNo = ++studentNo;
         this.studentName = studentName;
         this.korean = korean;
         this.english = english;

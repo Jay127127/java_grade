@@ -1,15 +1,14 @@
 package com.java.task.java_grade.controller;
 
-import java.io.*;
-import java.util.*;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.task.java_grade.entity.LicenseDetailExport;
 import com.java.task.java_grade.entity.StudentDto;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-public class app {
+import java.io.File;
+import java.io.FileOutputStream;
+import java.util.*;
+
+public class app03 {
     public static void main(String[] args) throws Exception {
         Random random = new Random();
         int n;
@@ -21,9 +20,8 @@ public class app {
         List<StudentDto> studentDtoList = new ArrayList<>();
         List<StudentDto> studentListCopy = new ArrayList<>();
 
-        // 학생 랜덤 배열 생성
         for (int i = 0; i < n; ++i) {
-            int studentNo = n++;
+            int studentNo = i;
             String name = RandomDataUtil.randomKoreanFullName(1, 2);
             int kor = random.nextInt(100);
             int eng = random.nextInt(100);
@@ -33,7 +31,7 @@ public class app {
             StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his);
             studentDtoList.add(student);
         }
-        
+
         // 등수 입력
         for (int i = 0; i < studentDtoList.size(); i++) {
             for(int j = 0; j< studentDtoList.size(); j++){
@@ -53,29 +51,9 @@ public class app {
             studentDtoList.set(rank-1, student);
         }
 
-        // 학생 리스트 콘솔 출력
+        // 학생 리스트 출력
         for (StudentDto student : studentDtoList) {
             System.out.println(student);
         }
-        //---------------------------------csv 파일 내보내기-------------------------------------------------------------//
-
-        try {
-            File location = new File("C:/Users/Intellivix/Desktop/java_task");
-            String excelFileName = "학생 점수 상세 [" + studentDtoList.size() + "명]";
-            String excelFileFullPath = location + "/" + excelFileName+ ".xlsx";
-
-            LicenseDetailExport export = new LicenseDetailExport();
-            XSSFWorkbook workbook = export.generate(studentDtoList);
-
-            FileOutputStream fileOutputStream = new FileOutputStream(excelFileFullPath);
-            workbook.write(fileOutputStream);
-
-            workbook.close();
-            fileOutputStream.close();
-
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }
-

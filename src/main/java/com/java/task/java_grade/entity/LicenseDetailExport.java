@@ -128,6 +128,7 @@ public class LicenseDetailExport {
                 add("사회");
                 add("총점");
                 add("평균");
+                add("등수");
             }
         };
         List<String> headerColumn = new ArrayList<String>() {
@@ -140,6 +141,7 @@ public class LicenseDetailExport {
                 add("history");
                 add("total");
                 add("average");
+                add("rank");
             }
         };
         XSSFSheet sheet = this.workbook.createSheet("학생점수표");
@@ -187,6 +189,8 @@ public class LicenseDetailExport {
                 value = String.valueOf(data.getTotal()); break;
             case "average" :
                 value = String.valueOf(data.getAverage()); break;
+            case "rank" :
+                value = String.valueOf(data.getRank()); break;
         }
         
         return value == null? Strings.EMPTY: value.toString();
