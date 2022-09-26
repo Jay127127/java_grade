@@ -1,12 +1,18 @@
 package com.java.task.java_grade.controller;
 
 import java.io.*;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.*;
 
 import com.java.task.java_grade.entity.LicenseDetailExport;
 import com.java.task.java_grade.entity.StudentDto;
+import com.opencsv.CSVParser;
+import com.opencsv.CSVReader;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.xmlbeans.impl.store.Path;
 
 public class app {
     public static void main(String[] args) throws Exception {
@@ -58,7 +64,81 @@ public class app {
         }
         //---------------------------------csv 파일 내보내기-------------------------------------------------------------//
 
+        BufferedReader bufferedReader = null;
+        BufferedWriter bufferedWriter = null;
+
         try {
+            bufferedWriter = Files.newBufferedWriter(Paths.get("C:/Users/Intellivix/Desktop/java_task/new.csv"));
+
+            bufferedWriter.write("등수 | 학생번호 | 학생 이름 | 국어 | 영어 | 수학 | 사회 | 과학 | 총점 | 평균");
+            bufferedWriter.newLine();
+
+            for(StudentDto student : studentDtoList){
+                StudentDto data = student;
+                String aData = "";
+                aData = data.getRank() + "|" + data.getStudentNo() + "|" + data.getStudentName() + "|"
+                        + data.getKorean() + "|" + data.getEnglish() + "|" + data.getMath() + "|" + data.getHistory() + "|"
+                        + data.getScience() + "|" + data.getTotal() + "|" + data.getAverage();
+
+                /*List<String> list = Collections.singletonList(student.toString());
+                for(String data : list){
+                    bufferedWriter.write(data);
+                    bufferedWriter.write(",");
+                }*/
+                //추가하기
+                bufferedWriter.write(aData);
+                bufferedWriter.newLine();
+            }
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally{
+            try{
+                if(bufferedWriter != null){
+                    bufferedWriter.flush();
+                    bufferedWriter.close();
+                }
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+    }
+
+
+//      ================================ 읽어서 다시쓰기 ==================================================================
+
+        //csv파일 읽기
+        CSVReader csvReader = new CSVReader(bufferedReader);
+        csvReader.readAll();
+
+        List<List<String>> csvList = new ArrayList<List<String>>();
+        File csv = new File("C:/Users/Intellivix/Desktop/java_task/new.csv");
+        String line = "";
+
+        try{
+            bufferedReader = new BufferedReader(new FileReader(csv));
+            while ((line = bufferedReader.readLine()) != null){
+                List<String> aLine = new ArrayList<String>();
+                String[] lineArr = line.split("|");
+                aLine = Arrays.asList(lineArr);
+                csvList.add(aLine);
+            }
+        }catch(FileNotFoundException e){
+            e.printStackTrace();
+        }catch(IOException e){
+            e.printStackTrace();
+        }finally {
+            try {
+                if (bufferedReader != null) {
+                    bufferedReader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+        /*try {
             File location = new File("C:/Users/Intellivix/Desktop/java_task");
             String excelFileName = "학생 점수 상세 [" + studentDtoList.size() + "명] " + LocalDate.now() +"";
             String excelFileFullPath = location + "/" + excelFileName+ ".xlsx";
@@ -74,7 +154,7 @@ public class app {
 
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
+        }*/
     }
 }
 
