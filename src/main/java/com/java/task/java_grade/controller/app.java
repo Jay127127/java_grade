@@ -1,12 +1,11 @@
 package com.java.task.java_grade.controller;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.task.java_grade.entity.LicenseDetailExport;
 import com.java.task.java_grade.entity.StudentDto;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class app {
@@ -21,19 +20,19 @@ public class app {
         List<StudentDto> studentDtoList = new ArrayList<>();
         List<StudentDto> studentListCopy = new ArrayList<>();
 
-        // 학생 랜덤 배열 생성
         for (int i = 0; i < n; ++i) {
-            int studentNo = n++;
+            int studentNo = i;
             String name = RandomDataUtil.randomKoreanFullName(1, 2);
             int kor = random.nextInt(100);
             int eng = random.nextInt(100);
             int math = random.nextInt(100);
             int his = random.nextInt(100);
+            int sci = random.nextInt(100);
 
-            StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his);
+            StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his, sci);
             studentDtoList.add(student);
         }
-        
+
         // 등수 입력
         for (int i = 0; i < studentDtoList.size(); i++) {
             for(int j = 0; j< studentDtoList.size(); j++){
@@ -53,7 +52,7 @@ public class app {
             studentDtoList.set(rank-1, student);
         }
 
-        // 학생 리스트 콘솔 출력
+        // 학생 리스트 출력
         for (StudentDto student : studentDtoList) {
             System.out.println(student);
         }
@@ -61,7 +60,7 @@ public class app {
 
         try {
             File location = new File("C:/Users/Intellivix/Desktop/java_task");
-            String excelFileName = "학생 점수 상세 [" + studentDtoList.size() + "명]";
+            String excelFileName = "학생 점수 상세 [" + studentDtoList.size() + "명] " + LocalDate.now() +"";
             String excelFileFullPath = location + "/" + excelFileName+ ".xlsx";
 
             LicenseDetailExport export = new LicenseDetailExport();

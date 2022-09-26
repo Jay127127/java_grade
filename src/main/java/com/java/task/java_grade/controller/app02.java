@@ -18,14 +18,15 @@ public class app02 {
             List<StudentDto> studentDtoList = new ArrayList<>();
 
             for (int i = 0; i < n; ++i) {
-                String name = RandomDataUtil.randomKoreanFullName(1, 2);
                 int studentNo = n++;
+                String name = RandomDataUtil.randomKoreanFullName(1, 2);
                 int kor = random.nextInt(100);
                 int eng = random.nextInt(100);
                 int math = random.nextInt(100);
                 int his = random.nextInt(100);
+                int sci = random.nextInt(100);
 
-                StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his);
+                StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his, sci);
                 studentDtoList.add(student);
             }
 

@@ -120,28 +120,30 @@ public class LicenseDetailExport {
         int cellnum = 0;
         List<String> headerTitle = new ArrayList<String>() {
             {
+                add("등수");
                 add("학생번호");
                 add("학생 이름");
                 add("국어");
                 add("영어");
                 add("수학");
                 add("사회");
+                add("과학");
                 add("총점");
                 add("평균");
-                add("등수");
             }
         };
         List<String> headerColumn = new ArrayList<String>() {
             {
+                add("rank");
                 add("studentNo");
                 add("studentName");
                 add("korean");
                 add("english");
                 add("math");
                 add("history");
+                add("science");
                 add("total");
                 add("average");
-                add("rank");
             }
         };
         XSSFSheet sheet = this.workbook.createSheet("학생점수표");
@@ -185,6 +187,8 @@ public class LicenseDetailExport {
                 value = String.valueOf(data.getMath()); break;
             case "history" :
                 value = String.valueOf(data.getHistory()); break;
+            case "science" :
+                value = String.valueOf(data.getScience()); break;
             case "total" :
                 value = String.valueOf(data.getTotal()); break;
             case "average" :

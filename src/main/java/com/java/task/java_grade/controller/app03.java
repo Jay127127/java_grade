@@ -20,15 +20,16 @@ public class app03 {
         List<StudentDto> studentDtoList = new ArrayList<>();
         List<StudentDto> studentListCopy = new ArrayList<>();
 
-        for (int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; i++) {
             int studentNo = i;
             String name = RandomDataUtil.randomKoreanFullName(1, 2);
             int kor = random.nextInt(100);
             int eng = random.nextInt(100);
             int math = random.nextInt(100);
             int his = random.nextInt(100);
+            int sci = random.nextInt(100);
 
-            StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his);
+            StudentDto student = new StudentDto(studentNo, name, kor, eng, math, his, sci);
             studentDtoList.add(student);
         }
 
@@ -53,6 +54,12 @@ public class app03 {
 
         // 학생 리스트 출력
         for (StudentDto student : studentDtoList) {
+            System.out.println(student);
+        }
+
+        System.out.println("====================================================================================\n\n\n");
+
+        for (StudentDto student : studentListCopy) {
             System.out.println(student);
         }
     }
