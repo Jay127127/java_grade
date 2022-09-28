@@ -64,7 +64,6 @@ public class app {
         }
         //---------------------------------csv 파일 내보내기-------------------------------------------------------------//
 
-        BufferedReader bufferedReader = null;
         BufferedWriter bufferedWriter = null;
 
         try {
@@ -107,11 +106,13 @@ public class app {
 
 //      ================================ 읽어서 다시쓰기 ==================================================================
 
+        BufferedReader bufferedReader = null;
+
         //csv파일 읽기
         CSVReader csvReader = new CSVReader(bufferedReader);
         csvReader.readAll();
 
-        List<List<String>> csvList = new ArrayList<List<String>>();
+        List<List<String>> csvList = new ArrayList<>();
         File csv = new File("C:/Users/Intellivix/Desktop/java_task/new.csv");
         String line = "";
 
@@ -138,6 +139,7 @@ public class app {
         }
 
 
+//      ================================ 읽어서 다시쓰기 ==================================================================
         /*try {
             File location = new File("C:/Users/Intellivix/Desktop/java_task");
             String excelFileName = "학생 점수 상세 [" + studentDtoList.size() + "명] " + LocalDate.now() +"";
