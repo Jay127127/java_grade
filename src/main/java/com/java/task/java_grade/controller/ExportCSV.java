@@ -1,22 +1,25 @@
 package com.java.task.java_grade.controller;
 
+import com.fasterxml.jackson.core.io.UTF8Writer;
 import com.java.task.java_grade.entity.StudentDto;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 
 public class ExportCSV {
 
-    public void exportStudent(List<StudentDto> studentDtoList){
+    public void exportStudent(List<StudentDto> studentDtoList, String path){
 
         BufferedWriter bufferedWriter = null;
-        //TODO : UTF-8 설정
         try {
-            bufferedWriter = Files.newBufferedWriter(Paths.get("C:/Users/Intellivix/Desktop/java_task/new.csv"));
+            bufferedWriter = Files.newBufferedWriter(Paths.get(path), StandardCharsets.UTF_8);
+
 
             bufferedWriter.write("등수,학생번호,학생이름,국어,영어,수학,사회,과학,총점,평균");
             bufferedWriter.newLine();
@@ -28,11 +31,6 @@ public class ExportCSV {
                         + data.getKorean() + "," + data.getEnglish() + "," + data.getMath() + "," + data.getHistory() + ","
                         + data.getScience() + "," + data.getTotal() + "," + data.getAverage();
 
-                /*List<String> list = Collections.singletonList(student.toString());
-                for(String data : list){
-                    bufferedWriter.write(data);
-                    bufferedWriter.write(",");
-                }*/
                 //추가하기
                 bufferedWriter.write(aData);
                 bufferedWriter.newLine();
