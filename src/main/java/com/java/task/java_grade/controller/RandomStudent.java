@@ -1,31 +1,23 @@
 package com.java.task.java_grade.controller;
 
-import com.java.task.java_grade.entity.LicenseDetailExport;
 import com.java.task.java_grade.entity.StudentDto;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.util.*;
 
-public class app03 {
-    public static void main(String[] args) throws Exception {
+public class RandomStudent {
+    public static List<StudentDto> randomStudent(int stuNo) throws Exception {
         Random random = new Random();
-        int n;
-
-        Scanner scanner = new Scanner(System.in);
-        System.out.print("확인할 학생 수를 입력하시오 >> ");
-        n = scanner.nextInt();
+        int n = stuNo;
 
         List<StudentDto> studentDtoList = new ArrayList<>();
         List<StudentDto> studentListCopy = new ArrayList<>();
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < n; ++i) {
             int studentNo = i;
             String name = RandomDataUtil.randomKoreanFullName(1, 2);
-            int kor = random.nextInt(100);
-            int eng = random.nextInt(100);
-            int math = random.nextInt(100);
+            int kor = (int)(Math.random() * 100);
+            int eng = (int)(Math.random() * 100);
+            int math = (int)(Math.random() * 100);
             int his = random.nextInt(100);
             int sci = random.nextInt(100);
 
@@ -52,15 +44,10 @@ public class app03 {
             studentDtoList.set(rank-1, student);
         }
 
-        // 학생 리스트 출력
+        // 학생 리스트 콘솔 출력
         for (StudentDto student : studentDtoList) {
             System.out.println(student);
         }
-
-        System.out.println("====================================================================================\n\n\n");
-
-        for (StudentDto student : studentListCopy) {
-            System.out.println(student);
-        }
+        return studentDtoList;
     }
 }

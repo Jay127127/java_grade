@@ -64,11 +64,11 @@ public class app {
         String readPath = "C:/Users/Intellivix/Desktop/java_task/new.csv";
         HashMap<String,Object> csvData = readCSVFile(readPath);
 
-        System.out.println("cvsData ::: " +csvData);
-
 //      ================================ 검색 기능 만들기 ==================================================================
 
-        /*System.out.println("검색할 이름을 입력 :: ");
+        /*
+        //1)
+        System.out.println("검색할 이름을 입력 :: ");
         String nameInput = scanner.next();
 
         List<StudentDto> searchedStudentList = new ArrayList<>();
@@ -81,32 +81,24 @@ public class app {
         }*/
 
 
+        //2)
         System.out.println("검색할 이름을 입력 :: ");
         String nameInput = scanner.next();
 
         List<StudentDto> searchedStudentList = new ArrayList<>();
 
-        if(csvData.containsKey(nameInput)){
-            StudentDto searched = (StudentDto) csvData.get(nameInput);
-            searchedStudentList.add(searched);
-        };
+        for(String key : csvData.keySet()){
+            if(key.contains(nameInput)){
+                searchedStudentList.add((StudentDto) csvData.get(key));
+            }
+        }
 
         for(StudentDto s: searchedStudentList){
             System.out.println(s);
         }
 
-
 //      ================================ 다시 CSV 내보내기 ==================================================================
         exportCSV.exportStudent(searchedStudentList, exportPath);
-
-
-
-
-
-
-
-
-
 
 //      ================================ 엑셀 파일로 내보내기 ==================================================================
 

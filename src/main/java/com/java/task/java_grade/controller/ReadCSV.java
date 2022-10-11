@@ -15,7 +15,9 @@ import java.util.List;
 public class ReadCSV {
     public static HashMap<String ,Object> readCSVFile(String readPath) {
 
-        /*HashMap<String, Object> csvData = new HashMap<>();
+        /*
+        //1)
+        HashMap<String, Object> csvData = new HashMap<>();
         List<StudentDto> studentDtoList = new ArrayList<>();
 
         String[] columnNames = null;
@@ -73,26 +75,26 @@ public class ReadCSV {
         return csvData;*/
 
 
-
+        //2)
         BufferedReader bufferedReader = null;
-
         HashMap<String, Object> csvData = new HashMap<>();
 
         try {
             bufferedReader = Files.newBufferedReader(Paths.get(readPath), StandardCharsets.UTF_8);
             String line = "";
 
-
             int i = 0;
             while ((line = bufferedReader.readLine()) != null) {
 
-                // 컬럼이름 추출
+                // 컬럼 추출 (todo :: bool 로 처리하는거 해보세요.)
                 if (i == 0) {
                     String[] columnNames = line.split(",");
-                    csvData.put("columnNames", columnNames);
+//                    csvData.put("columnNames", columnNames);
                     i++;
                     continue;
                 }
+
+                // todo : if문 만들어서 데이터가 없을 경우를 대비하기 
                 // 데이터 추출
                 String[] tempData = line.split(",");
                 StudentDto studentDto = new StudentDto();
@@ -109,7 +111,6 @@ public class ReadCSV {
                 studentDto.setAverage(Double.parseDouble(tempData[9]));
                 csvData.put(keyName, studentDto);
             }
-
         } catch (
                 FileNotFoundException e) {
             e.printStackTrace();
@@ -125,6 +126,5 @@ public class ReadCSV {
             }
         }
         return csvData;
-
     }
 }

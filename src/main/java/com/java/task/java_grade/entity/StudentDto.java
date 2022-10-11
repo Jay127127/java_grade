@@ -36,20 +36,7 @@ public class StudentDto {
         rank = 1;
     }
 
-    /*@Override
-    public String toString() {
-        return "StudentDto{" +
-                "studentNo=" + studentNo +
-                ", studentName='" + studentName + '\'' +
-                ", korean=" + korean +
-                ", english=" + english +
-                ", math=" + math +
-                ", history=" + history +
-                ", total=" + total +
-                ", average=" + average +
-                ", rank=" + rank +
-                '}';
-    }*/
+
 
 
 }
