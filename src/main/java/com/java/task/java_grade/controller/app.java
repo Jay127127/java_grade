@@ -3,8 +3,10 @@ package com.java.task.java_grade.controller;
 import java.util.*;
 
 import com.java.task.java_grade.entity.StudentDto;
+import com.java.task.java_grade.util.ExportCSV;
+import com.java.task.java_grade.util.RandomDataUtil;
 
-import static com.java.task.java_grade.controller.ReadCSV.readCSVFile;
+import static com.java.task.java_grade.util.ReadCSV.readCSVFile;
 
 public class app {
     public static void main(String[] args) throws Exception {

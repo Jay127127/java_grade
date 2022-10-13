@@ -1,4 +1,4 @@
-package com.java.task.java_grade.controller;
+package com.java.task.java_grade.util;
 
 import com.java.task.java_grade.entity.StudentDto;
 

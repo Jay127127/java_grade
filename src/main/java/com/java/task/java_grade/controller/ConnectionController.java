@@ -1,100 +1,58 @@
-//package com.java.task.java_grade.controller;
-//
-//import com.fasterxml.jackson.core.JsonGenerationException;
-//import com.fasterxml.jackson.core.JsonProcessingException;
-//import com.fasterxml.jackson.core.exc.StreamWriteException;
-//import com.fasterxml.jackson.databind.DatabindException;
-//import com.fasterxml.jackson.databind.JsonMappingException;
-//import com.fasterxml.jackson.databind.ObjectMapper;
-//import com.java.task.java_grade.entity.StudentDto;
-//
-//import java.io.BufferedReader;
-//import java.io.File;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.net.*;
-//import java.util.List;
-//
-//public class ConnectionController {
-//    public static void main(String[] args) throws Exception {
-//        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//        conn.setRequestMethod("GET");
-//        conn.setRequestProperty("Content-type", "application/json");
-//        conn.setDoOutput(true);
-//
-//        try{
-//            StringBuffer sb = new StringBuffer();
-//            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
-//            while(br.ready()) {
-//                sb.append(br.readLine());
-//            }
-//        }catch(Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//        String hostname = "127.0.0.1";
-//        int port = 1234;
-//        int timeout = 3000;
-//        SocketAddress socketAddress = new InetSocketAddress(hostname, port);
-//        Socket socket = new Socket();
-//        try {
-//            socket.setSoTimeout(timeout);			/* InputStream에서 데이터읽을때의 timeout */
-//            socket.connect(socketAddress, timeout);	/* socket연결 자체에대한 timeout */
-//        } catch (SocketException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            try {
-//                socket.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        ObjectMapper objectMapper = new ObjectMapper();
-//
-//        List<StudentDto> studentList = RandomStudent.randomStudent(30);
-//        try {
-//            //Convert object to JSON string
-//            String jsonInString = objectMapper.writeValueAsString(studentList);
-//            System.out.println(jsonInString);
-//
-//            //Convert object to JSON string and pretty print
-//            jsonInString = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(studentList);
-//            System.out.println(jsonInString);
-//
-//        } catch (JsonGenerationException e) {
-//            e.printStackTrace();
-//        } catch (JsonMappingException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//}
+/*
+package com.java.task.java_grade.controller;
+
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.java.task.java_grade.entity.StudentDto;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.*;
+import java.net.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+
+public class ConnectionController {
+    public static void main(String[] args) throws Exception {
+        URL url = new URL("http://example.com");
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("GET");
+        //setting request header
+        con.setRequestProperty("Content-Type", "application/json");
+        String contentType = con.getHeaderField("Content-Type");
+        con.setConnectTimeout(5000);
+        con.setReadTimeout(5000);
+        con.setInstanceFollowRedirects(false);
+        con.setFollowRedirects(false);
+
+        //setting cookie header
+        Map<String, String> parameters = new HashMap<>();
+        parameters.put("param1", "val");
+
+        con.setDoOutput(true);
+        DataOutputStream out = new DataOutputStream(con.getOutputStream());
+        out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+        out.flush();
+        out.close();
+
+        try{
+            BufferedReader in = new BufferedReader(
+                    new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer content = new StringBuffer();
+            while ((inputLine = in.readLine()) != null) {
+                content.append(inputLine);
+            }
+            in.close();
+            con.disconnect();
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+*/

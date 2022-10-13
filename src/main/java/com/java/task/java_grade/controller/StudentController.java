@@ -1,155 +1,100 @@
 package com.java.task.java_grade.controller;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
+import com.java.task.java_grade.service.StudentService;
+import com.java.task.java_grade.util.POMErrorCode;
+import com.java.task.java_grade.util.ResponseVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
 import java.io.IOException;
-import java.net.URI;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
-
-import static com.java.task.java_grade.controller.ReadCSV.readCSVFile;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 
-public class StudentController {
-    private static final String HOST_URL = "http://localhost:32123/api/student/grade";
+@WebServlet(name="StudentController", urlPatterns={"/student"})
+public class StudentController extends HttpServlet {
 
-    public static void main(String[] args) throws Exception {
+    private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
+    StudentService studentService = new StudentService();
 
-        final String URL = HOST_URL;
-        final HttpGet request = new HttpGet(URL);
-        final CloseableHttpClient httpClient = HttpClients.createDefault();
+    @Override
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("application/json"); // text html 형태로 출력 하겠다고 지정함
+        PrintWriter out = response.getWriter(); // response로 부터 출력 장치를 확보
 
-        // Apply timeout for the request
-        RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(3 * 1000)
-                .setConnectTimeout(3 * 1000)
-                .setConnectionRequestTimeout(3 * 1000)
-                .build();
-        request.setConfig(requestConfig);
-
-        System.out.println(" 시작 : HttpClient사용 Post방식 Rest API 테스트 -----");
-        System.out.println(" 시작 : HttpClient사용 Get 방식 Rest API 테스트 -----");
-
-        //--------------------------------------------------
-
-        try (CloseableHttpResponse response = httpClient.execute(request)) {
-            HttpEntity entity = response.getEntity();
-            String result = EntityUtils.toString(entity);
-            System.out.println(result);
-
-            String vResponseMessage = "";
-
-            //URI vUri = new URI("https://jsonplaceholder.typicode.com/postsXPXP");
-            URI vUri = new URI("https://reqres.in/api/users");
-
-            HttpClient vHttpClient = HttpClientBuilder.create().build();
-            HttpPost vHttpPost = new HttpPost(vUri);
-            vHttpPost.setHeader("", "");
-
-            vHttpPost.addHeader("", "");
-
-            vHttpPost.setEntity(new StringEntity(vResponseMessage));
-
-            HttpResponse vHttpResponse = vHttpClient.execute(vHttpPost);
-
-            //Response 출력
-            if (vHttpResponse.getStatusLine().getStatusCode() == 200) {
-
-                ResponseHandler<String> vResponseHandler = new BasicResponseHandler();
-                String vResponse = vResponseHandler.handleResponse(vHttpResponse);
-
-                System.out.println("\n");
-                System.out.println("요청 성공");
-                System.out.println("\t" + vHttpResponse.getStatusLine().getStatusCode());
-                System.out.println("\t" + vHttpResponse.getStatusLine().getReasonPhrase());
-                System.out.println("\t" + vResponse);
-
-            } else if (vHttpResponse.getStatusLine().getStatusCode() == 201)  {
-
-                ResponseHandler<String> vResponseHandler = new BasicResponseHandler();
-                String vResponse = vResponseHandler.handleResponse(vHttpResponse);
-
-                System.out.println("\n");
-                System.out.println("요청 성공");
-                System.out.println("\t" + vHttpResponse.getStatusLine().getStatusCode());
-                System.out.println("\t" + vHttpResponse.getStatusLine().getReasonPhrase());
-                System.out.println("\t" + vResponse);
-
-            } else {
-
-                System.out.println("\n");
-                System.out.println("요청 실패");
-                System.out.println("\t" + vHttpResponse.getStatusLine().getStatusCode());
-                System.out.println("\t" + vHttpResponse.getStatusLine().getReasonPhrase());
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception ex){
-            System.out.println(ex.toString());
+        String studentList = null;
+        try {
+            studentList = studentService.getStudentList();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
-
-        //--------------------------------------------------
-
-        System.out.println("\n");
-        System.out.println("종료 : HttpClient사용 Post방식 Rest API 테스트 -----");
+        out.println(studentList);
     }
+
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setContentType("text/html"); // text html 형태로 출력 하겠다고 지정함
+        PrintWriter out = response.getWriter(); // response로 부터 출력 장치를 확보
+
+        String yourName = request.getParameter("your_name"); // request에서 화면으로 부터 넘어온 파라메터의 값을 추출 합니다.
+
+        // html 내용을 출력
+        out.println("<html>");
+        out.println("hello, world<br/>");
+        out.println("method : " + request.getMethod() + "<br/>");
+        out.println("You'r name is " + yourName);
+        out.println("</html>");
+    }
+
+    /**
+     * PUT 요청을 처리
+     * @param request
+     * @param response
+     * @throws ServletException
+     * @throws IOException
+     */
+    @Override
+    public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+        response.setContentType("text/html"); // text html 형태로 출력 하겠다고 지정함
+        PrintWriter out = response.getWriter(); // response로 부터 출력 장치를 확보
+
+        String yourName = request.getParameter("your_name"); // request에서 화면으로 부터 넘어온 파라메터의 값을 추출 합니다.
+
+        // html 내용을 출력
+        out.println("<html>");
+        out.println("hello, world<br/>");
+        out.println("method : " + request.getMethod() + "<br/>");
+        out.println("You'r name is " + yourName);
+        out.println("</html>");
+    }
+
+
+//    @Override
+//    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//        logger.info(String.valueOf(request));
+//        logger.info(String.valueOf(response));
+//
+//        GradeService gradeService = new GradeService();
+//
+//        //조회 결과를 담은 어드민 리스트
+//        String studentDtoList = null;
+//        try {
+//            studentDtoList = gradeService.getGradeDetail();
+//        } catch (Exception e) {
+//            throw new RuntimeException(e);
+//        }
+//        request.setAttribute("studentDtoList", studentDtoList);
+//        request.getRequestDispatcher("/result").forward(request, response);
+//    }
 }
-
-
-
-
-
-    /*public void get(){
-        HttpURLConnection conn = null;
-        JSONObject responseJson = null;
-
-        try{
-            URL url = new URL(HOST_URL);
-
-            conn = (HttpURLConnection)url.openConnection();
-            conn.setConnectTimeout(3000);
-            conn.setReadTimeout(3000);
-            conn.setRequestMethod("GET");
-            conn.setRequestProperty("Content-Type", "application/json; utf-8");
-            conn.setRequestProperty("Accept", "application/json");
-
-            JSONObject jsonData = new JSONObject();
-
-            jsonData = responseJson.getJSONObject("StudentList");
-
-            int responseCode = conn.getResponseCode();
-            if (responseCode == 400 || responseCode == 401 || responseCode == 500 ) {
-                System.out.println(responseCode + " Error!");
-            } else {
-                BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"));
-                StringBuilder response = new StringBuilder();
-                String responseLine = "";
-                while ((responseLine = br.readLine()) != null) {
-                    response.append(responseLine);
-                }
-                responseJson = new JSONObject(response.toString());
-                System.out.println(responseJson);
-            }
-
-        } catch (ProtocolException e) {
-            throw new RuntimeException(e);
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-}*/

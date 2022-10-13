@@ -1,6 +1,7 @@
-package com.java.task.java_grade.controller;
+package com.java.task.java_grade.util;
 
 import com.java.task.java_grade.entity.StudentDto;
+import com.java.task.java_grade.util.RandomDataUtil;
 
 import java.util.*;
 

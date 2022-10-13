@@ -1,5 +1,7 @@
 package com.java.task.java_grade.controller;
 
+import com.java.task.java_grade.entity.StudentDto;
+import com.java.task.java_grade.util.RandomStudent;
 import org.apache.http.HttpEntity;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -9,6 +11,7 @@ import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -21,7 +24,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 
 public class ApiController {
-    private static final String HOST_URL = "http://localhost:32123/api/student/grade";
+    private static final String HOST_URL = "http://localhost:8888/student";
 
     public static void main(String[] args) throws Exception {
 
@@ -31,9 +34,9 @@ public class ApiController {
 
         // Apply timeout for the request
         RequestConfig requestConfig = RequestConfig.custom()
-                .setSocketTimeout(3 * 1000)
+                /*.setSocketTimeout(3 * 1000)
                 .setConnectTimeout(3 * 1000)
-                .setConnectionRequestTimeout(3 * 1000)
+                .setConnectionRequestTimeout(3 * 1000)*/
                 .build();
         request.setConfig(requestConfig);
 
@@ -44,8 +47,13 @@ public class ApiController {
 
         try (CloseableHttpResponse response = httpClient.execute(request)) {
             HttpEntity entity = response.getEntity();
-            String result = EntityUtils.toString(entity);
+            List<StudentDto> studentDtoList = RandomStudent.randomStudent(30);
+            String result = EntityUtils.toString((HttpEntity) studentDtoList);
+//            String result = EntityUtils.toString(entity);
+
+            System.out.println("\n 결과 :::::::::::::::::::::::::::::::::::::::::::::::::::::::");
             System.out.println(result);
+            System.out.println("결과 :::::::::::::::::::::::::::::::::::::::::::::::::::::::\n");
 
             String vResponseMessage = "";
 
