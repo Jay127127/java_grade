@@ -5,8 +5,13 @@ import com.java.task.java_grade.util.POMErrorCode;
 import com.java.task.java_grade.util.ResponseVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.BadSqlGrammarException;
+import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -18,15 +23,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 
-@WebServlet(name="StudentController", urlPatterns={"/student"})
+@RestController
+@RequestMapping("/student")
 public class StudentController extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     StudentService studentService = new StudentService();
 
-    @Override
+   /* @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("application/json"); // text html 형태로 출력 하겠다고 지정함
         PrintWriter out = response.getWriter(); // response로 부터 출력 장치를 확보
@@ -40,7 +47,7 @@ public class StudentController extends HttpServlet {
         out.println(studentList);
     }
 
-    @Override
+     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         response.setContentType("text/html"); // text html 형태로 출력 하겠다고 지정함
@@ -56,13 +63,7 @@ public class StudentController extends HttpServlet {
         out.println("</html>");
     }
 
-    /**
-     * PUT 요청을 처리
-     * @param request
-     * @param response
-     * @throws ServletException
-     * @throws IOException
-     */
+
     @Override
     public void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -97,4 +98,38 @@ public class StudentController extends HttpServlet {
 //        request.setAttribute("studentDtoList", studentDtoList);
 //        request.getRequestDispatcher("/result").forward(request, response);
 //    }
+
+*/
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseVO> getStudent() {
+        ResponseVO res = new ResponseVO();
+
+        try {
+            res = studentService.getStudentList();
+
+        }catch (Exception e) {
+            res = new ResponseVO();
+            res._setPOMErrorCode(POMErrorCode.P_6000);
+            res.setExceptionMessage(e.getLocalizedMessage());
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object>  updateStudent(HttpServletRequest request, HttpServletResponse response){
+        ResponseVO res = null;
+
+        try{
+
+            res = studentService.putStudentList(request);
+
+        }catch (Exception e){
+            res = new ResponseVO();
+            res._setPOMErrorCode(POMErrorCode.P_6000);
+            res.setExceptionMessage(e.getLocalizedMessage());
+        }
+        return new ResponseEntity(res, HttpStatus.OK);
+    }
+
+
 }

@@ -34,9 +34,9 @@ public class ApiController {
 
         // Apply timeout for the request
         RequestConfig requestConfig = RequestConfig.custom()
-                /*.setSocketTimeout(3 * 1000)
+                .setSocketTimeout(3 * 1000)
                 .setConnectTimeout(3 * 1000)
-                .setConnectionRequestTimeout(3 * 1000)*/
+                .setConnectionRequestTimeout(3 * 1000)
                 .build();
         request.setConfig(requestConfig);
 
