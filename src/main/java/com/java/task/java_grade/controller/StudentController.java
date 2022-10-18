@@ -1,29 +1,25 @@
 package com.java.task.java_grade.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.java.task.java_grade.entity.StudentDto;
 import com.java.task.java_grade.service.StudentService;
 import com.java.task.java_grade.util.POMErrorCode;
 import com.java.task.java_grade.util.ResponseVO;
+import com.sun.org.apache.xpath.internal.functions.WrongNumberArgsException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.jdbc.BadSqlGrammarException;
-import org.springframework.jdbc.UncategorizedSQLException;
+import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 
 @RestController
@@ -32,6 +28,52 @@ public class StudentController extends HttpServlet {
 
     private static final Logger logger = LoggerFactory.getLogger(StudentController.class);
     StudentService studentService = new StudentService();
+
+    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseVO> getStudent() {
+        ResponseVO res = new ResponseVO();
+
+        try {
+            res = studentService.getStudentList();
+        }catch (Exception e) {
+            res = new ResponseVO();
+            res._setPOMErrorCode(POMErrorCode.P_6000);
+            res.setExceptionMessage(e.getLocalizedMessage());
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/insert", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ResponseVO> insertStudent(@RequestBody StudentDto studentDto) throws Exception {
+        ResponseVO res = new ResponseVO();
+        if(studentDto.getCreateStudentNo() == null || studentDto.getCreateStudentNo() < 0) throw new Exception();
+
+        try {
+            res = studentService.insertStudent(studentDto);
+        }catch (Exception e) {
+            res = new ResponseVO();
+            res._setPOMErrorCode(POMErrorCode.P_6000);
+            res.setExceptionMessage(e.getLocalizedMessage());
+        }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PutMapping(value = "/update", produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Object>  updateStudent(@RequestBody StudentDto studentDto) throws Exception {
+        ResponseVO res = null;
+        if (studentDto.getTargetStudent() == null || studentDto.getTargetStudent().isEmpty()) throw new Exception();
+
+        try{
+            res = studentService.uppdateStudentList(studentDto);
+        }catch (Exception e){
+            res = new ResponseVO();
+            res._setPOMErrorCode(POMErrorCode.P_6000);
+            res.setExceptionMessage(e.getLocalizedMessage());
+        }
+        return new ResponseEntity(res, HttpStatus.OK);
+    }
+
+
 
    /* @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -100,36 +142,7 @@ public class StudentController extends HttpServlet {
 //    }
 
 */
-    @GetMapping(value = "/search", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<ResponseVO> getStudent() {
-        ResponseVO res = new ResponseVO();
 
-        try {
-            res = studentService.getStudentList();
-
-        }catch (Exception e) {
-            res = new ResponseVO();
-            res._setPOMErrorCode(POMErrorCode.P_6000);
-            res.setExceptionMessage(e.getLocalizedMessage());
-        }
-        return new ResponseEntity<>(res, HttpStatus.OK);
-    }
-
-    @PutMapping(value = "/update", produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Object>  updateStudent(HttpServletRequest request, HttpServletResponse response){
-        ResponseVO res = null;
-
-        try{
-
-            res = studentService.putStudentList(request);
-
-        }catch (Exception e){
-            res = new ResponseVO();
-            res._setPOMErrorCode(POMErrorCode.P_6000);
-            res.setExceptionMessage(e.getLocalizedMessage());
-        }
-        return new ResponseEntity(res, HttpStatus.OK);
-    }
 
 
 }

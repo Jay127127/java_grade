@@ -1,13 +1,17 @@
 package com.java.task.java_grade.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StudentDto {
 
+    private Integer createStudentNo;
+    private String targetStudent;
     private Integer studentNo = 0;
     private String studentName;
     private Integer korean;
